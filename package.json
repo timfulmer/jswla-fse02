@@ -1,0 +1,21 @@
+{
+  "name": "jswla-fse02",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/api.js",
+    "http": "cd ./html && python -m SimpleHTTPServer"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timfulmer/jswla-fse02.git"
+  },
+  "author": "timfulmer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timfulmer/jswla-fse02/issues"
+  },
+  "homepage": "https://github.com/timfulmer/jswla-fse02#readme"
+}
