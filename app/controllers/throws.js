@@ -48,6 +48,7 @@ function playThrow(req,res){
       thro.opponentThrow=req.body.opponentThrow;
       thro.opponentName=req.body.opponentName;
       thro.renderJudgement();
+      thro.modified=new Date();
       thro.save(function(err,thro){
         if(err){
           console.log('Could not dave throw:\n%s',err.stack);
