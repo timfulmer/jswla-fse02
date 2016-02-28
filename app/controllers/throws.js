@@ -8,6 +8,9 @@ var mongoose=require('mongoose'),
   Throw=mongoose.model('Throw');
 
 function createThrow(req,res){
+  if(!req.body.playerName || !req.body.playerThrow){
+    return res.send(400,'No player throw information in request body.');
+  }
   var thro=new Throw(req.body);
   thro.save(function(err,thro){
     if(err){
@@ -29,6 +32,12 @@ function openThrows(req,res){
     });
 }
 function playThrow(req,res){
+  if(!req.params.throwId){
+    return res.send(400,'No throwId in request parameters.');
+  }
+  if(!req.body.opponentName || !req.body.opponentThrow){
+    return res.send(400,'No opponent throw information in request body');
+  }
   Throw
     .findOne({_id:new ObjectId(req.params.throwId)})
     .exec(function(err,thro){
