@@ -11,10 +11,6 @@ function initialize(options){
   function initializePromise(resolve,reject){
     mongoose.connect(url);
     var connection=mongoose.connection;
-    connection.on('error',function(err){
-      console.log('Caught error connecting to MongoDB:\n%s',err.stack);
-      return reject(err);
-    });
     connection.once('open',function() {
       console.log("Connected to MongoDB server.");
       options.connection=connection;

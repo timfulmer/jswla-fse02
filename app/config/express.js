@@ -30,9 +30,6 @@ function initialize(options){
           server.address().address,server.address().port);
         options.server=server;
         return resolve(options);
-      })
-      .on('error',function(err){
-        return reject(err);
       });
   }
   return new Promise(initializePromise);

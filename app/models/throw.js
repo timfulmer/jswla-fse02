@@ -17,12 +17,8 @@ function transformJudgement(player,opponent,draw){
   if(draw){
     return outcomes[2];
   }
-  throw new Error('Could not render judgement.');
 }
 function renderJudgement(){
-  if(!this.playerThrow || !this.opponentThrow){
-    throw new Error('Not enough information to render judgement.');
-  }
   switch(this.playerThrow){
       case roshambo[0]: this.outcome=transformJudgement(
         this.opponentThrow===roshambo[2],
@@ -42,8 +38,6 @@ function renderJudgement(){
         this.opponentThrow===roshambo[2]
       );
       break;
-    default:
-      throw new Error('Could not render judgement.');
   }
 }
 
