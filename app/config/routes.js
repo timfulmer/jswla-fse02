@@ -4,9 +4,13 @@
 "use strict";
 
 function initialize(options){
+  options=options || {};
   var controllers=require('../controllers/');
-  if(!options || !options.express){
+  if(!options.express){
     throw new Error('No express!');
+  }
+  if(!controllers.throws){
+    throw new Error('No throws controller.');
   }
   options.express.post('/api/v1/throw',controllers.throws.createThrow);
   options.express.get('/api/v1/throw/open',controllers.throws.openThrows);
