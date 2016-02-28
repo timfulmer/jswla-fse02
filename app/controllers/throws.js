@@ -7,67 +7,30 @@ var mongoose=require('mongoose'),
   ObjectId=mongoose.Types.ObjectId,
   Throw=mongoose.model('Throw');
 
-function createThrow(req,res){
+function *createThrow(req,res){
   if(!req.body.playerName || !req.body.playerThrow){
     return res.send(400,'No player throw information in request body.');
   }
-  var thro=new Throw(req.body);
-  thro.save(function(err,thro){
-    if(err){
-      console.log('Could not create throw:\n%s',err.stack);
-      return res.send(502);
-    }
-    return res.json(thro);
-  });
+  var thro=yield new Throw(req.body).save();
+  return res.json(thro);
 }
-function openThrows(req,res){
-  Throw
-    .find({opponentThrow:{$exists:false}})
-    .exec(function(err,throws){
-      if(err){
-        console.log('Could not find open throws:\n%s',err.stack);
-        return res.send(502);
-      }
-      res.json(throws);
-    });
+function *openThrows(req,res){
+  var throws=yield Throw.find({opponentThrow:{$exists:false}});
+  return res.json(throws);
 }
-function playThrow(req,res){
+function *playThrow(req,res){
   if(!req.params.throwId){
     return res.send(400,'No throwId in request parameters.');
   }
   if(!req.body.opponentName || !req.body.opponentThrow){
     return res.send(400,'No opponent throw information in request body');
   }
-  Throw
-    .findOne({_id:new ObjectId(req.params.throwId)})
-    .exec(function(err,thro){
-      if(err || !thro){
-        console.log('Could not find throw with id %s:\n%s',req.params.throwId,err.stack);
-        return res.send(502);
-      }
-      thro.opponentThrow=req.body.opponentThrow;
-      thro.opponentName=req.body.opponentName;
-      thro.renderJudgement();
-      thro.modified=new Date();
-      thro.save(function(err,thro){
-        if(err){
-          console.log('Could not dave throw:\n%s',err.stack);
-          return res.send(502);
-        }
-        return res.json(thro);
-      })
-    })
+  var thro=yield Throw.findOne({_id:new ObjectId(req.params.throwId)});
+  return res.json(thro);
 }
-function closedThrows(req,res){
-  Throw
-    .find({opponentThrow:{$exists:true}})
-    .exec(function(err,throws){
-      if(err){
-        console.log('Could not find closed throws:\n%s',err.stack);
-        return res.send(502);
-      }
-      res.json(throws);
-    });
+function *closedThrows(req,res){
+  var throws=yield Throw.find({opponentThrow:{$exists:true}});
+  return res.json(throws);
 }
 
 module.exports={
