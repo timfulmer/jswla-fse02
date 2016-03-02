@@ -29,7 +29,7 @@ function *playThrow(req,res){
   return res.json(thro);
 }
 function *closedThrows(req,res){
-  var throws=yield Throw.find({opponentThrow:{$exists:true}});
+  var throws=yield Throw.find({opponentThrow:{$exists:true},opponentName:{$exists:true}});
   return res.json(throws);
 }
 

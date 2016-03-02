@@ -33,11 +33,41 @@
   var OpenThrow = React.createClass({
     render: function() {
       return (
-        <div>
+        <div className="row">
           <label className="col-sm-2 col-xs-5 control-label" htmlFor="{this.props.name}Throw">{this.props.name}</label>
           <div className="col-sm-2 col-xs-5">
             <ThrowDropdown id="{this.props.name}Throw"/>
           </div>
+        </div>
+      );
+    }
+  });
+  var OpenThrowList = React.createClass({
+    getInitialState: function() {
+      return {data:[]};
+    },
+    componentDidMount: function() {
+      $.ajax({
+        url: this.props.url,
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+          this.setState({data:data});
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    },
+    render: function() {
+      var openThrows = this.state.data.map(function(openThrow) {
+        return (
+          <OpenThrow name={openThrow.playerName} key={openThrow._id}/>
+        );
+      });
+      return (
+        <div>
+          {openThrows}
         </div>
       );
     }
@@ -56,15 +86,33 @@
             <div className="form-group">
               <label className="col-sm-2 col-xs-5 control-label" htmlFor="playerThrow">Throw:</label>
               <div className="col-sm-2 col-xs-5">
-                <ThrowDropdown id="playerThrow"/>
+                <ThrowDropdown id="playerThrow" />
               </div>
             </div>
             <div className="form-group">
-              <OpenThrow name="Tim"/>
+              <OpenThrowList url="http://localhost:3000/api/v1/throw/open"/>
             </div>
           </form>
         </div>
       );
+    }
+  });
+  var StrongText=React.createClass({
+    render:function(){
+      var strongText=(function(outcome,val){
+        if(outcome){
+          return (
+            <strong>{val}</strong>
+          );
+        }else{
+          return (
+            val
+          );
+        }
+      })(this.props.outcome,this.props.children);
+      return (
+        <span>{strongText}</span>
+      )
     }
   });
   var ClosedThrow = React.createClass({
@@ -73,26 +121,47 @@
         <div className="row">
           <div className="col-sm-2 col-xs-5 text-center">
             <div>
-              {this.props.playerName}
+              <StrongText outcome={this.props.outcome==='player'}>{this.props.playerName}</StrongText>
             </div>
-            <small>{this.props.playerThrow}</small>
+            <small><StrongText outcome={this.props.outcome==='player'}>{this.props.playerThrow}</StrongText></small>
           </div>
           <div className="col-sm-2 col-xs-5 text-center">
             <div>
-              <strong>{this.props.opponentName}</strong>
+              <StrongText outcome={this.props.outcome==='opponent'}>{this.props.opponentName}</StrongText>
             </div>
-            <small><strong>{this.props.opponentThrow}</strong></small>
+            <small><StrongText outcome={this.props.outcome==='opponent'}>{this.props.opponentThrow}</StrongText></small>
           </div>
         </div>
       );
     }
   });
   var ThrowsPanel = React.createClass({
+    getInitialState: function() {
+      return {data:[]};
+    },
+    componentDidMount: function() {
+      $.ajax({
+        url: 'http://localhost:3000/api/v1/throw/closed',
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+          this.setState({data:data});
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    },
     render: function() {
+      var closedThrows = this.state.data.map(function(closedThrow) {
+        return (
+          <ClosedThrow key={closedThrow._id} playerName={closedThrow.playerName} playerThrow={closedThrow.playerThrow} opponentName={closedThrow.opponentName} opponentThrow={closedThrow.opponentThrow} outcome={closedThrow.outcome}/>
+        );
+      });
       return (
         <div>
           <ThrowForm/>
-          <ClosedThrow playerName="John" playerThrow="Rock" opponentName="Jane" opponentThrow="Paper"/>
+          {closedThrows}
         </div>
       );
     }
