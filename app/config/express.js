@@ -22,7 +22,7 @@ function initialize(options){
     options.express=app;
     routes(options);
     var server=app
-      .listen(3000,function(){
+      .listen(options.port || 3000,function(){
         console.log('%s listening at http://%s:%s',app.locals.title,
           server.address().address,server.address().port);
         options.server=server;

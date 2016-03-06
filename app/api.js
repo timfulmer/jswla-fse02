@@ -4,9 +4,10 @@
 'use strict';
 
 var mongoose=require('./config/mongoose'),
-  express=require('./config/express');
+  express=require('./config/express'),
+  port=process.env.PORT || 3000;
 
-mongoose({})
+mongoose({port:port})
   .then(express)
   .catch(function(err){
     console.log('Caught error starting express server:\n%s',err.stack);

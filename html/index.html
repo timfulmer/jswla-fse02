@@ -106,6 +106,7 @@
     }
   });
   var ThrowsView=React.createClass({
+    host:'http://roshambo-env.us-east-1.elasticbeanstalk.com',
     noNameShowing:false,
     noThrowShowing:false,
     getInitialState:function() {
@@ -114,26 +115,26 @@
     updateThrows:function(){
       $('#playerThrow').val('');
       $.ajax({
-        url: 'http://localhost:3000/api/v1/throw/open',
+        url: this.host+'/api/v1/throw/open',
         dataType: 'json',
         cache: false,
         success: function(data) {
           this.setState({openThrows:data});
         }.bind(this),
         error: function(xhr, status, err) {
-          console.error('http://localhost:3000/api/v1/throw/open',
+          console.error(this.host+'/api/v1/throw/open',
             status, err.toString());
         }.bind(this)
       });
       $.ajax({
-        url: 'http://localhost:3000/api/v1/throw/closed',
+        url: this.host+'/api/v1/throw/closed',
         dataType: 'json',
         cache: false,
         success: function(data) {
           this.setState({closedThrows:data});
         }.bind(this),
         error: function(xhr, status, err) {
-          console.error('http://localhost:3000/api/v1/throw/closed', status, err.toString());
+          console.error(this.host+'/api/v1/throw/closed', status, err.toString());
         }.bind(this)
       });
     },
@@ -174,13 +175,13 @@
         $('#noThrow').slideToggle('slow');
       }
       $.ajax({
-        url: 'http://localhost:3000/api/v1/throw',
+        url: this.host+'/api/v1/throw',
         dataType: 'json',
         type: 'POST',
         data: {playerName:this.state.name,playerThrow:thro},
         success:this.updateThrows,
         error:function(xhr, status, err) {
-          console.error('http://localhost:3000/api/v1/throw',
+          console.error(this.host+'/api/v1/throw',
             status, err.toString());
         }.bind(this)
       });
@@ -196,13 +197,13 @@
         $('#noThrow').slideToggle('slow');
       }
       $.ajax({
-        url: 'http://localhost:3000/api/v1/throw/'+throwId,
+        url: this.host+'/api/v1/throw/'+throwId,
         dataType: 'json',
         type: 'PUT',
         data: {opponentName:this.state.name,opponentThrow:thro},
         success:this.updateThrows,
         error: function(xhr, status, err) {
-          console.error('http://localhost:3000/api/v1/throw/'+throwId,
+          console.error(this.host+'/api/v1/throw/'+throwId,
             status, err.toString());
         }.bind(this)
       });
