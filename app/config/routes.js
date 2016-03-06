@@ -1,7 +1,7 @@
 /**
  * Created by timfulmer on 2/27/16.
  */
-"use strict";
+'use strict';
 
 function initialize(options){
   var controllers=require('../controllers/');
