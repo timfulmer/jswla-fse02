@@ -3,8 +3,6 @@
  */
 'use strict';
 
-var mongoose=require('./config/mongoose'),
-  express=require('./config/express');
+var express=require('./config/express');
 
-mongoose({})
-  .then(express);
+express({});

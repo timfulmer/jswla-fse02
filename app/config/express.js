@@ -4,24 +4,20 @@
 "use strict";
 
 var express=require('express'),
-  bodyParser = require('body-parser'),
   Promise=require('bluebird'),
   routes=require('./routes');
+
+function logRequest(req,res,next){
+  console.log('%s %s',req.method,req.path);
+  return next();
+}
 
 function initialize(options){
   options=options || {};
   function initializePromise(resolve,reject){
     var app=express();
     app.locals.title='Roshambo';
-    app.use(bodyParser.urlencoded({
-      extended: true
-    }));
-    app.use(bodyParser.json());
-    app.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-    });
+    app.use(logRequest);
     options.express=app;
     routes(options);
     var server=app
