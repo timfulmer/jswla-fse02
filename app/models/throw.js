@@ -5,7 +5,7 @@
 
 var mongoose=require('mongoose'),
   roshambo=['Rock','Paper','Scissors'],
-  outcomes=['player','opponent','draw'];
+  outcomes=['Player','Opponent','Draw'];
 
 function transformJudgement(player,opponent,draw){
   if(player){
@@ -48,15 +48,22 @@ function renderJudgement(){
 }
 
 var throwSchema=mongoose.Schema({
-  created:{type:Date,default:new Date(),required:true},
-  modified:{type:Date,default:new Date(),required:true},
-  playerThrow:{type:'String',required:true,in:roshambo},
+  created:{type:Date},
+  modified:{type:Date},
+  playerThrow:{type:'String',required:true,enum:roshambo},
   playerName:{type:'String'},
-  opponentThrow:{type:'String',in:roshambo},
+  opponentThrow:{type:'String',enum:roshambo},
   opponentName:{type:'String'},
   outcome:{type:'String',in:outcomes}
 });
 throwSchema.statics.roshambo=roshambo;
 throwSchema.methods.renderJudgement=renderJudgement;
-
+throwSchema.pre('save', function(next){
+  var now=new Date();
+  this.modified=now;
+  if (!this.created) {
+    this.created=now;
+  }
+  next();
+});
 module.exports=mongoose.model('Throw',throwSchema);
