@@ -1,7 +1,7 @@
 /**
  * Created by timfulmer on 2/27/16.
  */
-"use strict";
+'use strict';
 var mongoose=require('mongoose'),
   Promise=require('bluebird'),
   url='mongodb://jswla:jswla@ds035573.mongolab.com:35573/jswla';

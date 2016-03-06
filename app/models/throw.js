@@ -1,11 +1,11 @@
 /**
  * Created by timfulmer on 2/27/16.
  */
-"use strict";
+'use strict';
 
 var mongoose=require('mongoose'),
   roshambo=['Rock','Paper','Scissors'],
-  outcomes=['player','opponent','draw'];
+  outcomes=['Player','Opponent','Draw'];
 
 function transformJudgement(player,opponent,draw){
   if(player){
@@ -20,7 +20,7 @@ function transformJudgement(player,opponent,draw){
 }
 function renderJudgement(){
   switch(this.playerThrow){
-      case roshambo[0]: this.outcome=transformJudgement(
+    case roshambo[0]: this.outcome=transformJudgement(
         this.opponentThrow===roshambo[2],
         this.opponentThrow===roshambo[1],
         this.opponentThrow===roshambo[0]
@@ -42,11 +42,11 @@ function renderJudgement(){
 }
 
 var throwSchema=mongoose.Schema({
-  created:{type:Date,default:new Date(),required:true},
-  modified:{type:Date,default:new Date(),required:true},
-  playerThrow:{type:'String',required:true,in:roshambo},
+  created:{type:Date},
+  modified:{type:Date},
+  playerThrow:{type:'String',required:true,enum:roshambo},
   playerName:{type:'String'},
-  opponentThrow:{type:'String',in:roshambo},
+  opponentThrow:{type:'String',enum:roshambo},
   opponentName:{type:'String'},
   outcome:{type:'String',in:outcomes}
 });
