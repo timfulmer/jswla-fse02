@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<div id="content" className="container-fluid"></div>
+<div id="content" class="container-fluid"></div>
 <script type="text/babel">
   var ThrowDropdown = React.createClass({
     render: function() {
@@ -34,9 +34,9 @@
     render: function() {
       return (
         <div>
-          <label className="col-sm-2 col-xs-5 control-label" htmlFor="{this.props.name}Throw">{this.props.name}</label>
+          <label className="col-sm-2 col-xs-5 control-label" htmlFor={this.props.name+'Throw'}>{this.props.name}</label>
           <div className="col-sm-2 col-xs-5">
-            <ThrowDropdown id="{this.props.name}Throw"/>
+            <ThrowDropdown id={this.props.name+'Throw'}/>
           </div>
         </div>
       );
